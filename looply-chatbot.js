@@ -55,7 +55,7 @@
         {
             id: "sveikinimas",
             keywords: ["labas", "sveiki", "sveikas", "laba diena", "laba rytas", "labas vakaras", "hey", "hi", "hello"],
-            answer: "Sveiki! 👋 Esu Looply AI asistentas. Galiu papasakoti apie mūsų paslaugas, kainas, nemokamą auditą arba padėti susisiekti su komanda. Ko norėtumėte sužinoti?"
+            answer: "Sveiki! 👋 Esu Looply AI asistentas. Galiu papasakoti apie mūsų paslaugas, kaip vyksta bendradarbiavimas, arba padėti užsiregistruoti nemokamam auditui. Ko norėtumėte sužinoti?"
         },
         {
             id: "aciu",
@@ -113,32 +113,57 @@
         },
         {
             id: "reputacija",
-            keywords: ["reputacija", "atsiliepimai", "recenzijos", "google atsiliepimai"],
+            keywords: ["reputacijos valdymas", "reputacijos automatizacija", "recenzijos", "google atsiliepimai", "atsiliepimu rinkimas"],
             answer: "Automatiškai renkame atsiliepimus po pirkimo: patenkintus klientus nukreipiame tiesiai į Google ar Facebook, o nepatenkintų atsiliepimus – iš karto persiunčiame jūsų komandai, kad galėtumėte reaguoti pirmi."
         },
+        {
+            id: "palikti-atsiliepima",
+            keywords: ["kaip palikti atsiliepima", "noriu palikti atsiliepima", "kur galiu ivertinti", "parasyti atsiliepima", "ivertinti jus", "atsiliepimai", "atsiliepimu skiltis"],
+            answer: "Labai malonu! Atsiliepimo formą rasite pagrindiniame puslapyje, skiltyje „Atsiliepimai“ – tiesiog įrašykite vardą, pasirinkite žvaigždučių įvertinimą (1–5) ir trumpą komentarą."
+        },
 
-        // --- Kainos -------------------------------------------------------
+        // --- Kainos / biudžetas (individualus pasiūlymas, be fiksuotų kainų) ---
         {
             id: "kainos",
-            keywords: ["kaina", "kiek kainuoja", "kainos", "kainodara", "paketai", "kiek kainuotu", "biudzetas"],
-            answer: "Turime tris pasiūlymus: „Starteris“ nuo €490 (vienas scenarijus + €69–99/mėn. priežiūra), „Procesų paketas“ nuo €690 (2–3 susiję scenarijai + €159–199/mėn., populiariausias pasirinkimas) ir „Pilna ekosistema“ nuo €1190+ (visa procesų grandinė + €249+/mėn.). Tiksli kaina priklauso nuo jūsų poreikių – tai išsiaiškiname per nemokamą auditą."
+            keywords: ["kaina", "kiek kainuoja", "kainos", "kainodara", "paketai", "kiek kainuotu", "biudzetas", "kiek kainuos", "kokia kaina", "kiek reiketu moketi", "pigiausias variantas"],
+            answer: "Kiekvienas verslas ir procesas skirtingas, todėl fiksuotų paketų nebeturime – tikslų pasiūlymą su kaina paruošiame individualiai po nemokamo audito, atsižvelgdami į automatizuojamų procesų kiekį ir sudėtingumą. Užsiregistruokite nemokamam auditui ir per 30 min. pokalbį gausite aiškų pasiūlymą."
         },
         {
             id: "prieziura",
-            keywords: ["prieziura", "menesinis mokestis", "ka apima prieziura", "palaikymas"],
-            answer: "Mėnesinis priežiūros mokestis apima visų sukurtų scenarijų stebėjimą, klaidų taisymą pasikeitus trečiųjų šalių sistemoms bei smulkius pakeitimus. Visiškai naujų scenarijų ar integracijų kūrimas apmokestinamas atskirai."
+            keywords: ["prieziura", "menesinis mokestis", "ka apima prieziura", "palaikymas", "menesinis aptarnavimas", "kas atsitinka po paleidimo"],
+            answer: "Po automatizacijos paleidimo siūlome mėnesinę priežiūrą – stebime sukurtus scenarijus, taisome klaidas pasikeitus trečiųjų šalių sistemoms bei atliekame smulkius pakeitimus. Tikslias priežiūros sąlygas ir kainą aptariame kartu su projekto pasiūlymu po nemokamo audito."
         },
 
         // --- Nemokamas auditas --------------------------------------------
         {
             id: "auditas",
-            keywords: ["auditas", "nemokamas auditas", "kaip uzsiregistruoti", "registracija", "konsultacija", "susitikimas"],
+            keywords: ["auditas", "nemokamas auditas", "kaip uzsiregistruoti", "registracija", "konsultacija", "susitikimas", "noriu audito", "kaip gauti auditas", "nemokama konsultacija"],
             answer: "Nemokamas procesų auditas trunka apie 30 minučių – peržvelgiame jūsų kasdienę veiklą, atrandame daugiausiai laiko atimančias užduotis ir pateikiame konkretų automatizacijos planą. Užsiregistruoti galite skiltyje „Nemokamas auditas“, tiesiog užpildę trumpą formą."
         },
         {
             id: "trukme-igyvendinimo",
-            keywords: ["kiek laiko trunka", "igyvendinimo trukme", "per kiek laiko", "kada bus paruosta"],
+            keywords: ["kiek laiko trunka", "igyvendinimo trukme", "per kiek laiko", "kada bus paruosta", "kiek uztruks", "greitai padarysite"],
             answer: "Paprastesni scenarijai (pvz. duomenų perkėlimas tarp dviejų programų) įgyvendinami per 1–2 savaites. Pilnos, visą įmonę apimančios ekosistemos kūrimas ir testavimas gali užtrukti nuo 3 iki 6 savaičių."
+        },
+        {
+            id: "bendradarbiavimo-eiga",
+            keywords: ["kaip vyksta bendradarbiavimas", "kokie zingsniai", "nuo ko pradeti", "kaip pradeti", "procesas", "kaip tai veikia zingsnis", "eiga"],
+            answer: "Viskas prasideda nuo nemokamo ~30 min. audito, kurio metu išsiaiškiname jūsų procesus ir parengiame konkretų planą su pasiūlymu. Susitarus, sukuriame automatizacijos scenarijus, juos ištestuojame, o po paleidimo – toliau prižiūrime ir, esant poreikiui, tobuliname."
+        },
+        {
+            id: "video-demo",
+            keywords: ["video", "demo", "parodykite pavyzdi", "irasas", "kaip atrodo", "pavyzdys", "galiu pamatyti"],
+            answer: "Taip! Pagrindiniame puslapyje, virš atsiliepimų skilties, rasite trumpą vaizdo įrašą, kuriame realiai parodome, kaip veikia mūsų automatizacijos – rekomenduoju peržiūrėti."
+        },
+        {
+            id: "kalba",
+            keywords: ["ar veikia lietuviskai", "lietuviu kalba", "kalbos palaikymas", "anglu kalba", "kitomis kalbomis"],
+            answer: "Taip, automatizacijas ir AI chat botus pritaikome lietuvių kalba, o esant poreikiui – ir kitomis kalbomis (pvz. anglų), priklausomai nuo jūsų klientų."
+        },
+        {
+            id: "ilgalaike-sutartis",
+            keywords: ["ilgalaike sutartis", "ar reikia isipareigoti", "minimalus laikotarpis", "ar galiu bet kada atsisakyti"],
+            answer: "Ne, nereikalaujame ilgalaikio įsipareigojimo. Bendradarbiavimo sąlygas, įskaitant sutarties nutraukimą su 30 dienų įspėjimu, rasite skiltyje „Paslaugų teikimo sąlygos“."
         },
 
         // --- Techniniai / suderinamumo klausimai ---------------------------
@@ -161,7 +186,7 @@
         // --- Kontaktai --------------------------------------------------
         {
             id: "kontaktai",
-            keywords: ["kontaktai", "susisiekti", "telefonas", "el pastas", "numeris", "adresas", "kur esate"],
+            keywords: ["kontaktai", "susisiekti", "telefonas", "el pastas", "numeris", "adresas", "kur esate", "kaip su jumis susisiekti", "noriu paskambinti", "jusu el pastas"],
             answer: "Su mumis galite susisiekti el. paštu looplylt@gmail.com, telefonu 060220515 arba 064753394, arba užpildę nemokamo audito formą – komanda atsakys per 24 valandas. Mūsų būstinė – Vilniuje, Lietuvoje."
         },
 
@@ -225,12 +250,26 @@
         entry._normKeywords = entry.keywords.map(normalize);
     });
 
+    /**
+     * Ar du žodžiai laikytini "ta pačia šaknimi" (tolerantiška lietuvių kalbos
+     * linksnių galūnėms: pvz. "sutartis"/"sutarties", "valdymas"/"valdymo").
+     * Lygina tik pradinę žodžio dalį (šaknį), ignoruodama skirtingas galūnes.
+     */
+    function stemsMatch(a, b) {
+        if (a === b) return true;
+        const MIN_LEN = 4;   // per trumpų žodžių nešakniname (per didelė klaidingo sutapimo rizika)
+        const STEM_LEN = 6;  // kiek raidžių laikome "šaknimi"
+        if (a.length < MIN_LEN || b.length < MIN_LEN) return false;
+        const cut = Math.min(a.length, b.length, STEM_LEN);
+        return a.slice(0, cut) === b.slice(0, cut);
+    }
+
     // ------------------------------------------------------------------
     // 3) ATSAKYMŲ PARINKIMO LOGIKA
     // ------------------------------------------------------------------
     const FALLBACK_ANSWERS = [
         "Šiuo klausimu tiksliai atsakyti automatiškai negaliu, bet mūsų komanda mielai padės! Užpildykite nemokamo audito formą arba parašykite el. paštu looplylt@gmail.com – atsakysime per 24 val.",
-        "Geras klausimas, tačiau man reikėtų daugiau konteksto, kad atsakyčiau tiksliai. Galite paklausti apie mūsų paslaugas, kainas, nemokamą auditą, terminus ar sąlygas – arba tiesiog parašykite mums el. paštu looplylt@gmail.com."
+        "Geras klausimas, tačiau man reikėtų daugiau konteksto, kad atsakyčiau tiksliai. Galite paklausti apie mūsų paslaugas, bendradarbiavimo eigą, nemokamą auditą ar sąlygas – arba tiesiog parašykite mums el. paštu looplylt@gmail.com."
     ];
 
     function pickFallback() {
@@ -239,12 +278,16 @@
 
     /**
      * Grąžina geriausią atsakymą pagal vartotojo įvestą žinutę.
+     * Naudoja šakninį (stem-based) atpažinimą, todėl atpažįsta klausimus
+     * net su kitokiomis linksnių galūnėmis (pvz. "sutarties" atpažįstama
+     * kaip "sutartis").
      * @param {string} userMessage - neapdorotas vartotojo tekstas
      * @returns {string} atsakymo tekstas
      */
     function getAnswer(userMessage) {
         const norm = normalize(userMessage);
         if (!norm) return pickFallback();
+        const msgWords = norm.split(' ').filter(Boolean);
 
         let bestScore = 0;
         let bestEntry = null;
@@ -253,16 +296,17 @@
             let score = 0;
             for (const kw of entry._normKeywords) {
                 if (!kw) continue;
-                if (norm === kw) {
-                    score += kw.length * 3; // tikslus sutapimas vertinamas labiausiai
-                } else if (norm.includes(kw)) {
-                    score += kw.length * 2; // frazė yra žinutėje
-                } else {
-                    // patikriname ar visi frazės žodžiai atskirai yra žinutėje (laisvesnis atpažinimas)
-                    const kwWords = kw.split(' ');
-                    if (kwWords.length > 1 && kwWords.every(w => norm.includes(w))) {
-                        score += kw.length;
-                    }
+                const kwWords = kw.split(' ').filter(Boolean);
+                const matchedCount = kwWords.filter(kwWord => msgWords.some(mw => stemsMatch(mw, kwWord))).length;
+
+                if (matchedCount === kwWords.length) {
+                    // visi frazės žodžiai atpažinti žinutėje (galimai su kitokiomis galūnėmis)
+                    score += kw.length * (kwWords.length > 1 ? 2.5 : 2);
+                } else if (matchedCount > 1 && kwWords.length > 2) {
+                    // dalinis sutapimas leidžiamas TIK ilgesnėms (3+ žodžių) frazėms su bent
+                    // 2 sutampančiais žodžiais – taip bendriniai žodžiai (pvz. "koks", "kiek")
+                    // patys vieni nesukelia klaidingo atitikimo su visiškai nesusijusia tema.
+                    score += kw.length * (matchedCount / kwWords.length) * 0.6;
                 }
             }
             if (score > bestScore) {
@@ -271,7 +315,7 @@
             }
         }
 
-        if (bestEntry && bestScore >= 3) {
+        if (bestEntry && bestScore >= 4) {
             return bestEntry.answer;
         }
         return pickFallback();
