@@ -6,30 +6,20 @@
     <title>Apie mus – Looply</title>
     <meta name="description" content="Susipažinkite su Looply komanda – verslo procesų automatizacijos scenarijų ir AI asistentų integracijos specialistais Lietuvoje.">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2722%27 fill=%27%23FF007F%27/%3E%3Ctext x=%2750%27 y=%2768%27 font-size=%2760%27 font-family=%27Arial,sans-serif%27 font-weight=%27800%27 fill=%27%23090A0F%27 text-anchor=%27middle%27%3EL%3C/text%3E%3C/svg%3E">
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS (iš anksto sukompiliuotas, greitesnis ir patikimesnis nei CDN JIT) -->
+    <link rel="stylesheet" href="looply-styles.css">
     <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#090A0F',
-                        darkCard: '#12141C',
-                        neonPink: '#FF007F',
-                        neonPinkHover: '#E0006C',
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
     <style>
+        /* Kad prisegtoji viršutinė juosta neuždengtų turinio šokant prie nuorodų (#faq, #atsiliepimai ir t.t.) */
+        html { scroll-padding-top: 5.5rem; }
+        /* Apsauga nuo automatinio priartinimo (zoom) iOS Safari, kai vartotojas paliečia įvesties lauką */
+        @media (max-width: 640px) {
+            input, textarea, select { font-size: 16px !important; }
+        }
         .neon-glow {
             text-shadow: 0 0 10px rgba(255, 0, 127, 0.6), 0 0 20px rgba(255, 0, 127, 0.4);
         }
@@ -63,7 +53,7 @@
             </div>
             
             <!-- Mobiliojo Meniu Mygtukas -->
-            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-white hover:text-neonPink transition-colors focus:outline-none" aria-label="Atidaryti meniu" aria-expanded="false" aria-controls="mobile-menu">
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex items-center justify-center text-white hover:text-neonPink transition-colors focus:outline-none" aria-label="Atidaryti meniu" aria-expanded="false" aria-controls="mobile-menu">
                 <i id="mobile-menu-icon" class="fa-solid fa-bars text-2xl"></i>
             </button>
         </div>
@@ -169,7 +159,7 @@
 
     <!-- CHATBOTAS (Pridėtas ir pilnai pritaikytas „Apie mus“ puslapiui) -->
     <div class="fixed bottom-5 right-5 z-50 flex flex-col items-end select-none">
-        <div id="chat-window" class="opacity-0 translate-y-5 pointer-events-none transition-all duration-300 w-80 sm:w-96 bg-darkCard border border-gray-800 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden mb-3">
+        <div id="chat-window" class="opacity-0 translate-y-5 pointer-events-none transition-all duration-300 w-[calc(100vw-2.5rem)] sm:w-96 bg-darkCard border border-gray-800 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden mb-3">
             <div class="bg-neonPink text-black p-4 flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
                     <div class="relative w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-neonPink flex items-center justify-center text-white font-black text-sm shrink-0">
@@ -178,7 +168,7 @@
                     </div>
                     <span class="font-bold text-sm">Looply AI Asistentas</span>
                 </div>
-                <button onclick="toggleChat()" class="hover:opacity-70 transition-opacity"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="toggleChat()" class="w-8 h-8 flex items-center justify-center hover:opacity-70 transition-opacity"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="p-4 h-64 overflow-y-auto space-y-3 text-xs flex flex-col" id="chat-messages">
                 <div class="bg-gray-800 text-gray-200 p-3 rounded-2xl rounded-tl-none max-w-[80%] self-start leading-relaxed">
@@ -190,11 +180,11 @@
                 <button onclick="sendChatMessage()" class="bg-neonPink text-black px-4 rounded-xl hover:bg-neonPinkHover transition-colors"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
-        <div id="chat-prompt" class="bg-darkCard text-white border border-gray-800 text-xs font-semibold px-3 py-2 rounded-xl mb-2 mr-1 shadow-[0_4px_15px_rgba(0,0,0,0.5)] flex items-center gap-2 animate-bounce transition-all duration-300">
+        <div id="chat-prompt" class="hidden sm:flex bg-darkCard text-white border border-gray-800 text-xs font-semibold px-3 py-2 rounded-xl mb-2 mr-1 shadow-[0_4px_15px_rgba(0,0,0,0.5)] flex items-center gap-2 animate-bounce transition-all duration-300">
             <span class="w-2 h-2 rounded-full bg-neonPink shadow-[0_0_6px_#FF007F]"></span>
             <span>Turite klausimų? 👋</span>
         </div>
-        <button onclick="toggleChat()" id="chat-btn" class="w-14 h-14 bg-neonPink text-black rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(255,0,127,0.4)] hover:scale-105 active:scale-95 transition-transform duration-300">
+        <button onclick="toggleChat()" id="chat-btn" class="w-12 h-12 sm:w-14 sm:h-14 bg-neonPink text-black rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(255,0,127,0.4)] hover:scale-105 active:scale-95 transition-transform duration-300">
             <i id="chat-icon" class="fa-solid fa-comments text-xl transition-transform duration-300"></i>
         </button>
     </div>
