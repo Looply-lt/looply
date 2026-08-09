@@ -6,30 +6,20 @@
     <title>Looply – Verslo Procesų Automatizacija</title>
     <meta name="description" content="Looply automatizuoja jūsų verslo procesus su pažangiausiomis automatizacijos platformomis ir AI asistentais – taupykite laiką ir mažinkite rankinio darbo kaštus.">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2722%27 fill=%27%23FF007F%27/%3E%3Ctext x=%2750%27 y=%2768%27 font-size=%2760%27 font-family=%27Arial,sans-serif%27 font-weight=%27800%27 fill=%27%23090A0F%27 text-anchor=%27middle%27%3EL%3C/text%3E%3C/svg%3E">
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS (iš anksto sukompiliuotas, greitesnis ir patikimesnis nei CDN JIT) -->
+    <link rel="stylesheet" href="looply-styles.css">
     <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#090A0F',
-                        darkCard: '#12141C',
-                        neonPink: '#FF007F',
-                        neonPinkHover: '#E0006C',
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
     <style>
+        /* Kad prisegtoji viršutinė juosta neuždengtų turinio šokant prie nuorodų (#faq, #atsiliepimai ir t.t.) */
+        html { scroll-padding-top: 5.5rem; }
+        /* Apsauga nuo automatinio priartinimo (zoom) iOS Safari, kai vartotojas paliečia įvesties lauką */
+        @media (max-width: 640px) {
+            input, textarea, select { font-size: 16px !important; }
+        }
         /* FUTURISTINIS NEONINIS KURSORIUS */
         html, body {
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3L3 19L8 14L13 21L16 19L11 13L17 13L3 3Z' fill='%23090A0F' stroke='%23FF007F' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E"), auto !important;
@@ -227,7 +217,7 @@
 <body class="bg-darkBg text-gray-200 font-sans selection:bg-neonPink selection:text-white overflow-x-hidden opacity-0 transition-opacity duration-500 ease-in-out">
 
     <!-- NAVIGACIJA SU MOBILIU MENIU (PRADŽIOJE PASLĖPTA VIRŠUJE IR PASIRODO TIK PASLINKUS ŽEMYN) -->
-    <header id="main-header" class="fixed top-0 w-full z-40 bg-darkBg/80 backdrop-blur-md border-b border-gray-800/60 -translate-y-full transition-transform duration-500 ease-in-out">
+    <header id="main-header" class="fixed top-0 w-full z-40 bg-darkBg/80 backdrop-blur-md border-b border-gray-800/60 transition-all duration-500 ease-in-out">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
                 <img src="looply-logo.png" alt="Looply" class="h-8 w-auto">
@@ -246,7 +236,7 @@
             </div>
             
             <!-- Mobiliojo Meniu Mygtukas -->
-            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-white hover:text-neonPink transition-colors focus:outline-none" aria-label="Atidaryti meniu" aria-expanded="false" aria-controls="mobile-menu">
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex items-center justify-center text-white hover:text-neonPink transition-colors focus:outline-none" aria-label="Atidaryti meniu" aria-expanded="false" aria-controls="mobile-menu">
                 <i id="mobile-menu-icon" class="fa-solid fa-bars text-2xl"></i>
             </button>
         </div>
@@ -640,7 +630,7 @@
 
     <!-- CHATBOTAS -->
     <div class="fixed bottom-5 right-5 z-50 flex flex-col items-end select-none">
-        <div id="chat-window" class="opacity-0 translate-y-5 pointer-events-none transition-all duration-300 w-80 sm:w-96 liquid-glass rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden mb-3">
+        <div id="chat-window" class="opacity-0 translate-y-5 pointer-events-none transition-all duration-300 w-[calc(100vw-2.5rem)] sm:w-96 liquid-glass rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden mb-3">
             <div class="bg-neonPink text-black p-4 flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
                     <div class="relative w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-neonPink flex items-center justify-center text-white font-black text-sm shrink-0">
@@ -649,7 +639,7 @@
                     </div>
                     <span class="font-bold text-sm">Looply AI Asistentas</span>
                 </div>
-                <button onclick="toggleChat()" class="hover:opacity-70 transition-opacity"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="toggleChat()" class="w-8 h-8 flex items-center justify-center hover:opacity-70 transition-opacity"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="p-4 h-64 overflow-y-auto space-y-3 text-xs flex flex-col" id="chat-messages">
                 <div class="bg-gray-800/80 text-gray-200 p-3 rounded-2xl rounded-tl-none max-w-[80%] self-start leading-relaxed">
@@ -661,11 +651,11 @@
                 <button onclick="sendChatMessage()" class="bg-neonPink text-black px-4 rounded-xl hover:bg-neonPinkHover transition-colors"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
-        <div id="chat-prompt" class="liquid-glass text-white text-xs font-semibold px-3 py-2 rounded-xl mb-2 mr-1 shadow-[0_4px_15px_rgba(0,0,0,0.5)] flex items-center gap-2 animate-bounce transition-all duration-300">
+        <div id="chat-prompt" class="hidden sm:flex liquid-glass text-white text-xs font-semibold px-3 py-2 rounded-xl mb-2 mr-1 shadow-[0_4px_15px_rgba(0,0,0,0.5)] flex items-center gap-2 animate-bounce transition-all duration-300">
             <span class="w-2 h-2 rounded-full bg-neonPink shadow-[0_0_6px_#FF007F]"></span>
             <span>Turite klausimų? 👋</span>
         </div>
-        <button onclick="toggleChat()" id="chat-btn" class="w-14 h-14 liquid-glass-btn rounded-full flex items-center justify-center">
+        <button onclick="toggleChat()" id="chat-btn" class="w-12 h-12 sm:w-14 sm:h-14 liquid-glass-btn rounded-full flex items-center justify-center">
             <i id="chat-icon" class="fa-solid fa-comments text-xl transition-transform duration-300 text-white"></i>
         </button>
     </div>
@@ -684,11 +674,11 @@
         function handleHeaderVisibility() {
             const header = document.getElementById('main-header');
             if (window.scrollY > 80) {
-                header.classList.remove('-translate-y-full');
-                header.classList.add('translate-y-0');
+                header.classList.add('shadow-[0_4px_20px_rgba(0,0,0,0.4)]', 'bg-darkBg/95');
+                header.classList.remove('bg-darkBg/80');
             } else {
-                header.classList.remove('translate-y-0');
-                header.classList.add('-translate-y-full');
+                header.classList.remove('shadow-[0_4px_20px_rgba(0,0,0,0.4)]', 'bg-darkBg/95');
+                header.classList.add('bg-darkBg/80');
             }
         }
 
