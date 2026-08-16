@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="lt" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Looply - Verslo Procesų Automatizacija</title>
+    <meta name="description" content="Looply automatizuoja jūsų verslo procesus su pažangiausiomis automatizacijos platformomis ir AI asistentais - taupykite laiką ir mažinkite rankinio darbo kaštus.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2722%27 fill=%27%23FF007F%27/%3E%3Ctext x=%2750%27 y=%2768%27 font-size=%2760%27 font-family=%27Arial,sans-serif%27 font-weight=%27800%27 fill=%27%23090A0F%27 text-anchor=%27middle%27%3EL%3C/text%3E%3C/svg%3E">
+    <!-- Tailwind CSS (iš anksto sukompiliuotas, greitesnis ir patikimesnis nei CDN JIT) -->
+    <link rel="stylesheet" href="looply-styles.css">
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Kad prisegtoji viršutinė juosta neuždengtų turinio šokant prie nuorodų (#faq, #atsiliepimai ir t.t.) */
+        html { scroll-padding-top: 5.5rem; }
+        /* Apsauga nuo automatinio priartinimo (zoom) iOS Safari, kai vartotojas paliečia įvesties lauką */
+        @media (max-width: 640px) {
+            input, textarea, select { font-size: 16px !important; }
+        }
+
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.6), 0 0 20px rgba(255, 0, 127, 0.4);
+        }
+        .neon-border:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+            border-color: #FF007F;
+        }
+        /* ANIMACIJA DUOMENŲ SRAUTAMS */
+        @keyframes pulseLine {
+            0% { stroke-dashoffset: 200; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .animate-line {
+            stroke-dasharray: 12 36;
+            animation: pulseLine 4s linear infinite;
+        }
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 12s linear infinite;
+        }
+        /* ŠVELNUS MAZGŲ IR ŽYMŲ TRŪKČIOJIMAS FLUIDINIAM EFEKTUI */
+        @keyframes floatBadge {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float-badge {
+            animation: floatBadge 4s infinite ease-in-out;
+        }
+        @keyframes chatBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .chat-dot {
+            animation: chatBounce 1.2s infinite ease-in-out;
+        }
+
+        /* AUTOMATIZACIJŲ DEMONSTRACIJOS KILPA */
+        @keyframes sceneCycle {
+            0%, 100% { opacity: 0; filter: blur(16px); transform: scale(.96); }
+            5%, 15%  { opacity: 1; filter: blur(0);     transform: scale(1); }
+            20%      { opacity: 0; filter: blur(16px); transform: scale(.96); }
+        }
+        .autoscene {
+            animation: sceneCycle 15s cubic-bezier(.45,0,.25,1) infinite both;
+        }
+        .conn-line {
+            position: absolute; top: 50%; height: 2px; transform: translateY(-50%);
+            background: repeating-linear-gradient(90deg, #FF007F 0 6px, transparent 6px 14px);
+            background-size: 28px 2px;
+            animation: flowLine 1s linear infinite;
+            opacity: .5;
+            z-index: 0;
+        }
+        @keyframes flowLine { to { background-position: 28px 0; } }
+        @keyframes coreGrow {
+            0%   { transform: scale(1.18); }
+            25%  { transform: scale(1); }
+            75%  { transform: scale(1); }
+            100% { transform: scale(1.18); }
+        }
+        .core-node {
+            animation: coreGrow 3s ease-in-out infinite;
+        }
+        @keyframes coreBurst {
+            0%   { transform: scale(1);   opacity: .6; }
+            25%  { transform: scale(.25); opacity: 0; }
+            75%  { transform: scale(.25); opacity: 0; }
+            100% { transform: scale(1);   opacity: .6; }
+        }
+        .core-burst {
+            animation: coreBurst 3s ease-in-out infinite;
+        }
+        .spark {
+            position: absolute; top: 50%; left: 50%; width: 4px; height: 26px;
+            margin: -13px 0 0 -2px; border-radius: 4px;
+            box-shadow: 0 0 8px 2px currentColor;
+            animation: sparkBurst 3s cubic-bezier(.15,.6,.35,1) infinite;
+            z-index: 16; pointer-events: none;
+        }
+        @keyframes sparkBurst {
+            0%   { transform: rotate(var(--ang)) translateY(0) scaleY(.5);        opacity: 1; }
+            40%  { transform: rotate(var(--ang)) translateY(var(--dist)) scaleY(1); opacity: 0; }
+            100% { transform: rotate(var(--ang)) translateY(var(--dist)) scaleY(1); opacity: 0; }
+        }
+
+        /* ULTRA-SKAIDRUS LIQUID GLASS */
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.02) !important;
+            backdrop-filter: blur(25px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 
+                0 15px 45px 0 rgba(0, 0, 0, 0.6),
+                inset 0 1px 1px 0 rgba(255, 255, 255, 0.15) !important;
+        }
+
+        .liquid-glass-hover {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .liquid-glass-hover:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(255, 0, 127, 0.45) !important;
+            box-shadow: 
+                0 20px 50px 0 rgba(255, 0, 127, 0.15),
+                inset 0 1px 2px 0 rgba(255, 255, 255, 0.2) !important;
+            transform: translateY(-8px);
+        }
+
+        /* SKAIDRŪS STIKLINIAI MYGTUKAI (LIQUID GLASS BUTTONS) */
+        .liquid-glass-btn {
+            background: rgba(255, 0, 127, 0.08) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(255, 0, 127, 0.35) !important;
+            color: #ffffff !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: 
+                0 6px 20px rgba(255, 0, 127, 0.1),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+        }
+        .liquid-glass-btn:hover {
+            background: rgba(255, 0, 127, 0.22) !important;
+            border-color: rgba(255, 0, 127, 0.7) !important;
+            box-shadow: 
+                0 0 25px rgba(255, 0, 127, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+            transform: scale(1.03);
+        }
+
+        /* Organiški skysčio burbulai fone */
+        @keyframes liquidBlob1 {
+            0%, 100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; transform: translate(0, 0) scale(1); }
+            33% { border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%; transform: translate(30px, -50px) scale(1.15); }
+            66% { border-radius: 50% 80% 40% 90% / 70% 50% 80% 50%; transform: translate(-20px, 30px) scale(0.95); }
+        }
+        @keyframes liquidBlob2 {
+            0%, 100% { border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%; transform: translate(0, 0) scale(1); }
+            50% { border-radius: 35% 65% 30% 70% / 60% 30% 70% 40%; transform: translate(-40px, 20px) scale(1.2); }
+        }
+        .animate-liquid-blob-1 {
+            animation: liquidBlob1 16s ease-in-out infinite alternate;
+        }
+        .animate-liquid-blob-2 {
+            animation: liquidBlob2 20s ease-in-out infinite alternate-reverse;
+        }
+
+        /* NAUJOS, RYŠKIOS ĮĖJIMO (INTRO) ANIMACIJOS */
+        @keyframes slideUpHero {
+            0% {
+                opacity: 0;
+                transform: translateY(80px);
+                filter: blur(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+        @keyframes slideInNode {
+            0% {
+                opacity: 0;
+                transform: translateX(100px) scale(0.85);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+                filter: blur(0);
+            }
+        }
+        
+        /* Klasės greitam pritaikymui užsikrovus svetainei */
+        .animate-hero-text {
+            animation: slideUpHero 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-hero-node {
+            animation: slideInNode 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-gray-200 font-sans selection:bg-neonPink selection:text-white overflow-x-hidden opacity-0 transition-opacity duration-500 ease-in-out">
+
+    <!-- NAVIGACIJA SU MOBILIU MENIU (PRADŽIOJE PASLĖPTA VIRŠUJE IR PASIRODO TIK PASLINKUS ŽEMYN) -->
+    <header id="main-header" class="fixed top-0 w-full z-40 bg-darkBg/80 backdrop-blur-md border-b border-gray-800/60 transition-all duration-500 ease-in-out">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+                <img src="looply-logo.png" alt="Looply" class="h-8 w-auto">
+            </a>
+            <!-- Kompiuterio Navigacija -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide">
+                <a href="#paslaugos" class="hover:text-neonPink transition-colors">Paslaugos</a>
+                <a href="apiemus.html" class="hover:text-neonPink transition-colors">Apie mus</a>
+                <a href="#faq" class="hover:text-neonPink transition-colors">D.U.K.</a>
+                <a href="#atsiliepimai" class="hover:text-neonPink transition-colors">Atsiliepimai</a>
+                <a href="#kontaktai" class="hover:text-neonPink transition-colors">Kontaktai</a>
+            </nav>
+            <!-- Kompiuterio ryškus audito mygtukas -->
+            <div class="hidden md:flex">
+                <a href="auditas.html" class="liquid-glass-btn font-extrabold px-6 py-3 rounded-xl text-sm tracking-wide uppercase">Gauti Nemokamą Auditą</a>
+            </div>
+            
+            <!-- Mobiliojo Meniu Mygtukas -->
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex items-center justify-center text-white hover:text-neonPink transition-colors focus:outline-none" aria-label="Atidaryti meniu" aria-expanded="false" aria-controls="mobile-menu">
+                <i id="mobile-menu-icon" class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Išskleidžiamas Mobilusis Meniu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-darkBg/95 backdrop-blur-lg border-b border-gray-800 absolute top-20 left-0 w-full px-6 py-6 space-y-4 flex flex-col font-semibold shadow-2xl">
+            <a href="#paslaugos" onclick="toggleMobileMenu()" class="hover:text-neonPink transition-colors py-2 border-b border-gray-900/60">Paslaugos</a>
+            <a href="apiemus.html" onclick="toggleMobileMenu()" class="hover:text-neonPink transition-colors py-2 border-b border-gray-900/60">Apie mus</a>
+            <a href="#faq" onclick="toggleMobileMenu()" class="hover:text-neonPink transition-colors py-2 border-b border-gray-900/60">D.U.K.</a>
+            <a href="#atsiliepimai" onclick="toggleMobileMenu()" class="hover:text-neonPink transition-colors py-2 border-b border-gray-900/60">Atsiliepimai</a>
+            <a href="#kontaktai" onclick="toggleMobileMenu()" class="hover:text-neonPink transition-colors py-2 mb-2">Kontaktai</a>
+            <a href="auditas.html" class="liquid-glass-btn font-extrabold px-5 py-3 rounded-xl text-center text-sm w-full block uppercase tracking-wider">Gauti Nemokamą Auditą</a>
+        </div>
+    </header>
+
+    <!-- PILNO EKRANO ĮVADAS (HERO / WELCOME COVER) -->
+    <section id="hero-welcome" class="relative w-full min-h-screen md:h-screen flex items-center justify-center overflow-hidden bg-darkBg pt-12 md:pt-0 pb-20 md:pb-0">
+        <!-- Judantys skysto stiklo fono elementai -->
+        <div class="absolute top-1/4 left-1/4 w-80 h-80 bg-neonPink/25 rounded-full blur-[90px] animate-liquid-blob-1 pointer-events-none z-0"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[110px] animate-liquid-blob-2 pointer-events-none z-0"></div>
+
+        <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center relative z-10 px-6">
+            <!-- RYŠKI INTRO ANIMACIJA TEKSTUI -->
+            <div class="space-y-6 opacity-0 animate-hero-text z-10 relative">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neonPink/10 border border-neonPink/30 text-neonPink text-xs font-semibold tracking-wider uppercase">
+                    <i class="fa-solid text-xs fa-bolt"></i> Nauja Verslo Era
+                </div>
+                <h1 class="text-4xl sm:text-6xl font-bold text-white leading-tight">
+                    Paverskite rankinį darbą <span class="text-transparent bg-clip-text bg-gradient-to-r from-neonPink to-purple-500 neon-glow">Autopilotu</span>
+                </h1>
+                <p class="text-gray-400 text-lg max-w-xl leading-relaxed">
+                    Sujungiame jūsų naudojamas programas, kad jos dirbtų pačios. Automatiškai perkeliame duomenis tarp sistemų, užpildome dokumentus, atrašome į klientų laiškus ir atsakome į klausimus svetainėje - be jokio rankinio jūsų darbo.
+                </p>
+                <div class="pt-4 flex flex-wrap gap-4">
+                    <a href="auditas.html" class="liquid-glass-btn font-bold px-8 py-4 rounded-xl text-base text-center">Užsakyti nemokamą auditą</a>
+                    <button onclick="scrollToContent()" class="border border-gray-700 hover:border-neonPink text-white px-8 py-4 rounded-xl transition-all text-base text-center">Mūsų veikla</button>
+                </div>
+            </div>
+
+            <!-- RYŠKI INTRO ANIMACIJA MAZGAMS -->
+            <div class="relative flex justify-center items-center p-8 h-[430px] lg:h-[480px] overflow-hidden opacity-0 animate-hero-node z-10">
+                <!-- (jungiamosios linijos dabar yra kiekvienos scenos viduje, kad išnyktų kartu su ja) -->
+
+                <!-- CENTRINIS AI MAZGAS -->
+                <div class="core-burst absolute w-64 h-64 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(255,0,127,0.45) 0%, rgba(168,85,247,0.25) 40%, transparent 72%); z-index: 15;"></div>
+                <span class="spark" style="--ang:0deg;   --dist:-230px; background:linear-gradient(#fff,#FF007F); color:#FF007F;"></span>
+                <span class="spark" style="--ang:45deg;  --dist:-260px; background:linear-gradient(#fff,#a855f7); color:#a855f7; animation-delay:.06s;"></span>
+                <span class="spark" style="--ang:90deg;  --dist:-240px; background:linear-gradient(#fff,#FF007F); color:#FF007F;"></span>
+                <span class="spark" style="--ang:135deg; --dist:-270px; background:linear-gradient(#fff,#a855f7); color:#a855f7; animation-delay:.06s;"></span>
+                <span class="spark" style="--ang:180deg; --dist:-230px; background:linear-gradient(#fff,#FF007F); color:#FF007F;"></span>
+                <span class="spark" style="--ang:225deg; --dist:-260px; background:linear-gradient(#fff,#a855f7); color:#a855f7; animation-delay:.06s;"></span>
+                <span class="spark" style="--ang:270deg; --dist:-240px; background:linear-gradient(#fff,#FF007F); color:#FF007F;"></span>
+                <span class="spark" style="--ang:315deg; --dist:-270px; background:linear-gradient(#fff,#a855f7); color:#a855f7; animation-delay:.06s;"></span>
+                <div class="z-20 relative w-24 h-24 bg-white border-2 border-neonPink text-neonPink rounded-full flex items-center justify-center shadow-[0_0_35px_rgba(255,0,127,0.5)] transition-all duration-500 hover:scale-110 core-node">
+                    <div class="absolute inset-0 rounded-full border border-neonPink/30 animate-ping opacity-25"></div>
+                    <span class="text-5xl font-black bg-gradient-to-br from-purple-400 to-neonPink bg-clip-text text-transparent animate-pulse">L</span>
+                    <svg class="absolute -inset-4 w-32 h-32 -z-10 animate-[spin_10s_linear_infinite]" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="46" stroke="#FF007F" stroke-width="1.5" stroke-dasharray="10 25" fill="none" class="opacity-70"/>
+                    </svg>
+                    <svg class="absolute -inset-6 w-36 h-36 -z-10 animate-[spin_15s_linear_infinite_reverse]" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="46" stroke="#a855f7" stroke-width="1" stroke-dasharray="15 40" fill="none" class="opacity-50"/>
+                    </svg>
+                </div>
+
+                <!-- AUTOMATIZACIJŲ KILPA (5 scenos, kiekviena rodoma ~3s, motion-blur perėjimas) -->
+                <div class="autoscene absolute inset-0 flex items-center justify-between px-[8%]" style="animation-delay:0s"><div class="conn-line" style="left:19%; width:26%;"></div><div class="conn-line" style="right:19%; width:26%; animation-direction:reverse;"></div>
+                    <span class="absolute top-5 left-1/2 -translate-x-1/2 text-[11px] font-bold tracking-widest uppercase text-red-400">Gmail automatizacija</span>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-red-400/30 shadow-lg"><i class="fa-solid fa-envelope text-2xl text-red-400"></i></div><span class="text-[10px] text-gray-400 font-bold tracking-wider block min-h-[28px] text-center">NAUJAS LAIŠKAS</span></div>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-green-500/30"><i class="fa-solid fa-check text-2xl text-green-400"></i></div><span class="text-[10px] text-green-300 font-bold tracking-wider text-center block min-h-[28px]">ATSAKYTA<br>AKIMIRKSNIU</span></div>
+                </div>
+                <div class="autoscene absolute inset-0 flex items-center justify-between px-[8%]" style="animation-delay:3s"><div class="conn-line" style="left:19%; width:26%;"></div><div class="conn-line" style="right:19%; width:26%; animation-direction:reverse;"></div>
+                    <span class="absolute top-5 left-1/2 -translate-x-1/2 text-[11px] font-bold tracking-widest uppercase text-blue-400">Lead'ų apdorojimas</span>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-blue-400/30 shadow-lg"><i class="fa-solid fa-user-plus text-2xl text-blue-400"></i></div><span class="text-[10px] text-gray-400 font-bold tracking-wider block min-h-[28px] text-center">UŽKLAUSA GAUTA</span></div>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-green-500/30"><i class="fa-solid fa-check text-2xl text-green-400"></i></div><span class="text-[10px] text-green-300 font-bold tracking-wider text-center block min-h-[28px]">KLIENTAS<br>PRISKIRTAS</span></div>
+                </div>
+                <div class="autoscene absolute inset-0 flex items-center justify-between px-[8%]" style="animation-delay:6s"><div class="conn-line" style="left:19%; width:26%;"></div><div class="conn-line" style="right:19%; width:26%; animation-direction:reverse;"></div>
+                    <span class="absolute top-5 left-1/2 -translate-x-1/2 text-[11px] font-bold tracking-widest uppercase text-green-400">Sąskaitų automatizacija</span>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-green-400/30 shadow-lg"><i class="fa-solid fa-file-invoice-dollar text-2xl text-green-400"></i></div><span class="text-[10px] text-gray-400 font-bold tracking-wider block min-h-[28px] text-center">SĄSKAITA GAUTA</span></div>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-green-500/30"><i class="fa-solid fa-check text-2xl text-green-400"></i></div><span class="text-[10px] text-green-300 font-bold tracking-wider text-center block min-h-[28px]">DUOMENYS<br>ĮRAŠYTI</span></div>
+                </div>
+                <div class="autoscene absolute inset-0 flex items-center justify-between px-[8%]" style="animation-delay:9s"><div class="conn-line" style="left:19%; width:26%;"></div><div class="conn-line" style="right:19%; width:26%; animation-direction:reverse;"></div>
+                    <span class="absolute top-5 left-1/2 -translate-x-1/2 text-[11px] font-bold tracking-widest uppercase text-purple-400">AI chat botai</span>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-purple-400/30 shadow-lg"><i class="fa-solid fa-comment-dots text-2xl text-purple-400"></i></div><span class="text-[10px] text-gray-400 font-bold tracking-wider block min-h-[28px] text-center">KLAUSIMAS GAUTAS</span></div>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-green-500/30"><i class="fa-solid fa-check text-2xl text-green-400"></i></div><span class="text-[10px] text-green-300 font-bold tracking-wider text-center block min-h-[28px]">ATSAKYTA<br>PER 2S</span></div>
+                </div>
+                <div class="autoscene absolute inset-0 flex items-center justify-between px-[8%]" style="animation-delay:12s"><div class="conn-line" style="left:19%; width:26%;"></div><div class="conn-line" style="right:19%; width:26%; animation-direction:reverse;"></div>
+                    <span class="absolute top-5 left-1/2 -translate-x-1/2 text-[11px] font-bold tracking-widest uppercase text-yellow-400">Reputacijos valdymas</span>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-yellow-400/30 shadow-lg"><i class="fa-solid fa-star text-2xl text-yellow-400"></i></div><span class="text-[10px] text-gray-400 font-bold tracking-wider block min-h-[28px] text-center">PIRKIMAS ĮVYKO</span></div>
+                    <div class="flex flex-col items-center gap-2"><div class="w-16 h-16 rounded-2xl flex items-center justify-center relative z-10 bg-gradient-to-br from-darkCard to-black border border-green-500/30"><i class="fa-solid fa-check text-2xl text-green-400"></i></div><span class="text-[10px] text-green-300 font-bold tracking-wider text-center block min-h-[28px]">ATSILIEPIMAS<br>GAUTAS</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Švelnus scroll-down indikatorius -->
+        <div onclick="scrollToContent()" class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500 text-[10px] tracking-widest uppercase cursor-pointer hover:text-neonPink transition-colors z-20">
+            <span>Slinkite žemyn</span>
+            <i class="fa-solid fa-chevron-down text-lg text-neonPink animate-bounce"></i>
+        </div>
+    </section>
+
+    <!-- „NORMALUS“ EKRANAS (PRASIDEDA NUO PASLAUGŲ SEKCIJOS) -->
+    <div id="normal-screen-content">
+
+        <!-- PASLAUGŲ SEKCIJA -->
+        <section id="paslaugos" class="py-24 px-6 max-w-7xl mx-auto relative overflow-hidden">
+            <!-- Dideli skysto judančio stiklo burbulai fone -->
+            <div class="absolute top-1/4 left-10 w-96 h-96 bg-neonPink/15 rounded-full blur-[130px] animate-liquid-blob-1 pointer-events-none z-0"></div>
+            <div class="absolute bottom-1/4 right-10 w-[450px] h-[450px] bg-purple-500/15 rounded-full blur-[150px] animate-liquid-blob-2 pointer-events-none z-0"></div>
+
+            <div class="text-center max-w-3xl mx-auto mb-20 space-y-4 scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neonPink/10 border border-neonPink/20 text-neonPink text-xs font-semibold tracking-wide uppercase">
+                    <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i> Maksimalus Efektyvumas
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-bold text-white tracking-tight">Ką mes darome?</h2>
+                <p class="text-gray-400 text-lg leading-relaxed">
+                    Naudodami pažangiausius <span class="text-neonPink font-semibold">AI/DI variklius</span> ir <span class="text-white font-semibold">automatizacijas</span>, sujungiame jūsų įrankius į vieną autonominį organizmą.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+                <!-- 1 Kortelė: Gmail -->
+                <div class="group p-8 liquid-glass liquid-glass-hover rounded-3xl scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <div class="w-14 h-14 bg-neonPink/10 border border-neonPink/20 text-neonPink rounded-2xl flex items-center justify-center text-2xl mb-6 transition-all duration-500 group-hover:bg-neonPink group-hover:text-black group-hover:scale-110 group-hover:rotate-6 shadow-[inset_0_0_10px_rgba(255,0,127,0.1)]">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neonPink transition-colors duration-300 flex items-center justify-between">
+                        Gmail automatizacija (KVS)
+                        <i class="fa-solid fa-arrow-up-right text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 -translate-x-1 group-hover:translate-y-0 group-hover:translate-x-0 text-neonPink"></i>
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">Gautas laiškas automatiškai nuskaitomas, AI atpažįsta kliento duomenis ir sugeneruoja atsakymą. Įrašas sukuriamas ar atnaujinamas jūsų duomenų bazėje.</p>
+                </div>
+
+                <!-- 2 Kortelė: Chat Botai -->
+                <div class="group p-8 liquid-glass liquid-glass-hover rounded-3xl scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <div class="w-14 h-14 bg-neonPink/10 border border-neonPink/20 text-neonPink rounded-2xl flex items-center justify-center text-2xl mb-6 transition-all duration-500 group-hover:bg-neonPink group-hover:text-black group-hover:scale-110 group-hover:rotate-6 shadow-[inset_0_0_10px_rgba(255,0,127,0.1)]">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neonPink transition-colors duration-300 flex items-center justify-between">
+                        Išmanūs AI Chat Botai
+                        <i class="fa-solid fa-arrow-up-right text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 -translate-x-1 group-hover:translate-y-0 group-hover:translate-x-0 text-neonPink"></i>
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">Svetainės lankytojų aptarnavimas ir lead'ų rinkimas realiu laiku. Botas supranta kontekstą, atsako į D.U.K. ir registruoja klientus tiesiai į CRM sistemą.</p>
+                </div>
+
+                <!-- 3 Kortelė: Lead'ai -->
+                <div class="group p-8 liquid-glass liquid-glass-hover rounded-3xl scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <div class="w-14 h-14 bg-neonPink/10 border border-neonPink/20 text-neonPink rounded-2xl flex items-center justify-center text-2xl mb-6 transition-all duration-500 group-hover:bg-neonPink group-hover:text-black group-hover:scale-110 group-hover:rotate-6 shadow-[inset_0_0_10px_rgba(255,0,127,0.1)]">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neonPink transition-colors duration-300 flex items-center justify-between">
+                        Lead'ų apdorojimas
+                        <i class="fa-solid fa-arrow-up-right text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 -translate-x-1 group-hover:translate-y-0 group-hover:translate-x-0 text-neonPink"></i>
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">Kai klientas užpildo formą, sistema akimirksniu išsiunčia SMS/laišką, sukuria kortelę CRM, priskiria vadybininką bei informuoja komandą per Slack.</p>
+                </div>
+
+                <!-- 4 Kortelė: Soc. medijų automatizacija -->
+                <div class="group p-8 liquid-glass liquid-glass-hover rounded-3xl scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <div class="w-14 h-14 bg-neonPink/10 border border-neonPink/20 text-neonPink rounded-2xl flex items-center justify-center text-2xl mb-6 transition-all duration-500 group-hover:bg-neonPink group-hover:text-black group-hover:scale-110 group-hover:rotate-6 shadow-[inset_0_0_10px_rgba(255,0,127,0.1)]">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neonPink transition-colors duration-300 flex items-center justify-between">
+                        Soc. medijų automatizacija
+                        <i class="fa-solid fa-arrow-up-right text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 -translate-x-1 group-hover:translate-y-0 group-hover:translate-x-0 text-neonPink"></i>
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">AI/DI sugeneruotas turinys automatiškai publikuojamas jūsų „Facebook“, „Instagram“ ir kituose profiliuose - be rankinio kėlimo, pagal suplanuotą grafiką.</p>
+                </div>
+
+                <!-- 5 Kortelė: Sąskaitos -->
+                <div class="group p-8 liquid-glass liquid-glass-hover rounded-3xl scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <div class="w-14 h-14 bg-neonPink/10 border border-neonPink/20 text-neonPink rounded-2xl flex items-center justify-center text-2xl mb-6 transition-all duration-500 group-hover:bg-neonPink group-hover:text-black group-hover:scale-110 group-hover:rotate-6 shadow-[inset_0_0_10px_rgba(255,0,127,0.1)]">
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neonPink transition-colors duration-300 flex items-center justify-between">
+                        Sąskaitos ir Mokėjimai
+                        <i class="fa-solid fa-arrow-up-right text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 -translate-x-1 group-hover:translate-y-0 group-hover:translate-x-0 text-neonPink"></i>
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">Gauti laiškai su sąskaitomis automatiškai atpažįstami - kaip dokumentas, tekste ar nuoroda. AI ištraukia duomenis ir įrašo juos į jūsų apskaitos suvestinę.</p>
+                </div>
+
+                <!-- 6 Kortelė: Reputacija -->
+                <div class="group p-8 liquid-glass liquid-glass-hover rounded-3xl scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <div class="w-14 h-14 bg-neonPink/10 border border-neonPink/20 text-neonPink rounded-2xl flex items-center justify-center text-2xl mb-6 transition-all duration-500 group-hover:bg-neonPink group-hover:text-black group-hover:scale-110 group-hover:rotate-6 shadow-[inset_0_0_10px_rgba(255,0,127,0.1)]">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-neonPink transition-colors duration-300 flex items-center justify-between">
+                        Individuali automatizacija
+                        <i class="fa-solid fa-arrow-up-right text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 -translate-x-1 group-hover:translate-y-0 group-hover:translate-x-0 text-neonPink"></i>
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300">Sukuriame automatizaciją, pritaikytą būtent jūsų įmonės poreikiams. Tai bus visiškai jūsų nuosava automatizacija - individualiai suprojektuota ir pagaminta.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- D.U.K. SEKCIJA -->
+        <section id="faq" class="py-24 px-6 max-w-4xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                <h2 class="text-3xl font-bold text-white">Dažniausiai užduodami klausimai</h2>
+            </div>
+            <div class="space-y-4">
+                <div class="liquid-glass rounded-2xl overflow-hidden scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex justify-between items-center text-white font-semibold hover:bg-darkCard transition-colors">
+                        <span>Kas įeina į mėnesinį priežiūros mokestį?</span>
+                        <i class="fa-solid fa-chevron-down text-sm text-neonPink transition-transform"></i>
+                    </button>
+                    <div class="max-h-0 transition-all duration-300 ease-in-out overflow-hidden bg-darkCard/20">
+                        <p class="p-6 text-gray-400 text-sm leading-relaxed border-t border-gray-800/60">
+                            Mėnesinis mokestis apima visų sukurtų scenarijų nuolatinį stebėjimą, klaidų taisymą keičiantis trečiųjų šalių API sistemoms, bei smulkius pakeitimus. Naujų scenarijų ar integracijų kūrimas apmokestinamas papildomai.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="liquid-glass rounded-2xl overflow-hidden scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex justify-between items-center text-white font-semibold hover:bg-darkCard transition-colors">
+                        <span>Ką daryti, jei vietoje CRM naudojame labai specifinę apskaitos sistemą?</span>
+                        <i class="fa-solid fa-chevron-down text-sm text-neonPink transition-transform"></i>
+                    </button>
+                    <div class="max-h-0 transition-all duration-300 ease-in-out overflow-hidden bg-darkCard/20">
+                        <p class="p-6 text-gray-400 text-sm leading-relaxed border-t border-gray-800/60">
+                            Mes nesame prisirišę prie vieno įrankio. Jei sistema turi API sąsają arba palaiko Webhook užklausas, mes galime ją integruoti ir sujungti su bet kuria kita jūsų ekosistemos dalimi naudodami savo automatizacijos technologijas.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="liquid-glass rounded-2xl overflow-hidden scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex justify-between items-center text-white font-semibold hover:bg-darkCard transition-colors">
+                        <span>Ar jūsų kuriami svetainės chatbotai naudoja dirbtinį intelektą?</span>
+                        <i class="fa-solid fa-chevron-down text-sm text-neonPink transition-transform"></i>
+                    </button>
+                    <div class="max-h-0 transition-all duration-300 ease-in-out overflow-hidden bg-darkCard/20">
+                        <p class="p-6 text-gray-400 text-sm leading-relaxed border-t border-gray-800/60">
+                            Taip! Mes integruojame pažangius kalbos modelius (LLM), suprogramuotus tiksliai pagal jūsų svetainės turinį ir verslo taisykles. Chatbotas bendrauja natūraliai, atsako į klausimus ir geba patikimai rinkti klientų kontaktus.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="liquid-glass rounded-2xl overflow-hidden scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex justify-between items-center text-white font-semibold hover:bg-darkCard transition-colors">
+                        <span>Kiek laiko trunka vienos automatizacijos įgyvendinimas?</span>
+                        <i class="fa-solid fa-chevron-down text-sm text-neonPink transition-transform"></i>
+                    </button>
+                    <div class="max-h-0 transition-all duration-300 ease-in-out overflow-hidden bg-darkCard/20">
+                        <p class="p-6 text-gray-400 text-sm leading-relaxed border-t border-gray-800/60">
+                            Priklausomai nuo užduoties sudėtingumo, paprastesni scenarijai (pvz. duomenų perkėlimas dantų dviejų programų) įgyvendinami per 1-2 savaites. Pilnos, visą įmonę apimančios ekosistemos kūrimas ir nuodugnus testavimas gali užtrukti nuo 3 iki 6 savaičių.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="liquid-glass rounded-2xl overflow-hidden scroll-reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex justify-between items-center text-white font-semibold hover:bg-darkCard transition-colors">
+                        <span>Ar reikės keisti mūsų dabar naudojamas programas naujomis?</span>
+                        <i class="fa-solid fa-chevron-down text-sm text-neonPink transition-transform"></i>
+                    </button>
+                    <div class="max-h-0 transition-all duration-300 ease-in-out overflow-hidden bg-darkCard/20">
+                        <p class="p-6 text-gray-400 text-sm leading-relaxed border-t border-gray-800/60">
+                            Dažniausiai ne. Mūsų tikslas yra sujungti jūsų jau turimus įrankius (Gmail, jūsų dabartinį CRM, Excel/Sheets, buhalteriją) į vieną bendrą grandinę, kad jūsų komandai nereikėtų keisti kasdienių įpročių ar mokytis naudotis visiškai naujomis sistemomis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!-- =================================================== -->
+<!--  ČIA ĮKLIJUOKITE NAUJĄ DEMO VAIZDO ĮRAŠO SEKCIJĄ   -->
+<!-- =================================================== -->
+<section class="py-20 bg-darkCard/50 border-t border-b border-gray-800/60 relative overflow-hidden">
+    <!-- Neoninis švytėjimo fonas -->
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-neonPink/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-neonPink/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Antraštė -->
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-neonPink/10 text-neonPink border border-neonPink/20 mb-4">
+                <i class="fa-solid fa-play text-xs"></i> DEMO Pristatymas
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                Pamatykite, kaip veikia mūsų <span class="text-neonPink neon-glow">automatizacijos</span>
+            </h2>
+            <p class="mt-4 text-gray-400 text-lg">
+                Kelių sekundžių demonstracija, kaip automatizuoti CRM ir el. pašto procesai sutaupo dešimtis valandų rankinio darbo.
+            </p>
+        </div>
+
+        <!-- Vaizdo įrašo grotuvas pilna kokybe -->
+        <div class="relative rounded-2xl overflow-hidden border border-gray-700/60 shadow-2xl bg-darkBg liquid-glass">
+            <video 
+                class="w-full h-auto block rounded-2xl" 
+                controls 
+                preload="metadata"
+                playsinline
+            >
+                <source src="looply-demo.mp4" type="video/mp4">
+                Jūsų naršyklė nepalaiko vaizdo įrašų žymos.
+            </video>
+        </div>
+    </div>
+</section>
+<!-- =================================================== -->
+<!--             DEMO SEKCIJOS PABAIGA                  -->
+<!-- =================================================== -->
+
+        <!-- ATSILIEPIMAI -->
+        <section id="atsiliepimai" class="py-24 px-6 max-w-5xl mx-auto">
+            <div class="text-center mb-4">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-3">Klientų <span class="text-transparent bg-clip-text bg-gradient-to-r from-neonPink to-purple-500">atsiliepimai</span></h2>
+                <p class="text-gray-400 max-w-xl mx-auto mb-2">Ką sako klientai, jau automatizavę savo procesus su mumis.</p>
+                <p class="text-sm text-gray-500">Atsiliepimai: <span id="review-count" class="text-neonPink font-bold">-</span></p>
+                <p id="admin-badge" class="hidden mt-3 inline-flex items-center gap-2 text-xs font-semibold text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-3 py-1">
+                    <i class="fa-solid fa-user-shield"></i> Administratoriaus režimas įjungtas
+                </p>
+            </div>
+
+            <!-- ATSILIEPIMO FORMA -->
+            <div class="max-w-xl mx-auto bg-darkCard border border-gray-800 rounded-2xl p-6 sm:p-8 mb-14 shadow-lg">
+                <h3 class="text-white font-bold mb-5 text-lg">Palikite savo atsiliepimą</h3>
+                <form id="review-form" class="space-y-4" novalidate>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1.5 font-semibold uppercase tracking-wider">Vardas</label>
+                        <input type="text" id="review-name" maxlength="60" placeholder="Jūsų vardas" class="w-full bg-darkBg border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonPink transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1.5 font-semibold uppercase tracking-wider">Įvertinimas</label>
+                        <div id="star-rating" class="flex gap-1.5" data-rating="0"></div>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1.5 font-semibold uppercase tracking-wider">Atsiliepimas</label>
+                        <textarea id="review-text" maxlength="500" rows="4" placeholder="Papasakokite apie savo patirtį su Looply..." class="w-full bg-darkBg border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonPink transition-colors resize-none"></textarea>
+                    </div>
+                    <p id="review-error" class="hidden text-red-400 text-xs font-semibold bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2"></p>
+                    <p id="review-success" class="hidden text-green-400 text-xs font-semibold bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-2"></p>
+                    <button type="submit" id="review-submit-btn" class="w-full bg-neonPink hover:bg-neonPinkHover text-black font-extrabold py-3 rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-[0_0_20px_rgba(255,0,127,0.4)] text-sm uppercase tracking-wide">
+                        Siųsti atsiliepimą
+                    </button>
+                </form>
+            </div>
+
+            <!-- ATSILIEPIMŲ SĄRAŠAS -->
+            <div id="reviews-loading" class="text-center text-gray-500 text-sm py-8">
+                <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Kraunami atsiliepimai...
+            </div>
+            <p id="reviews-empty" class="hidden text-center text-gray-500 text-sm py-8">Kol kas atsiliepimų nėra - būkite pirmi! 🎉</p>
+            <div id="reviews-list" class="grid sm:grid-cols-2 gap-5"></div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer id="kontaktai" class="border-t border-gray-900 bg-black pt-16 pb-8 px-6">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="space-y-4">
+                    <a href="index.html" class="flex items-center gap-2 hover:opacity-90 transition-opacity w-fit">
+                        <img src="looply-logo.png" alt="Looply" class="h-6 w-auto">
+                    </a>
+                    <p class="text-gray-500 text-xs leading-relaxed">Automatizuoti verslo procesai jūsų augimui ir ramybei. Pamirškite rankinį duomenų kopijavimą.</p>
+                </div>
+                <div>
+                    <h5 class="text-white text-sm font-semibold mb-4 tracking-wider uppercase">Nuorodos</h5>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="#paslaugos" class="hover:text-neonPink transition-colors">Veikla</a></li>
+                        <li><a href="auditas.html" class="hover:text-neonPink transition-colors">Nemokamas Auditas</a></li>
+                        <li><a href="apiemus.html" class="hover:text-neonPink transition-colors">Apie mus</a></li>
+                        <li><a href="#faq" class="hover:text-neonPink transition-colors">D.U.K.</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white text-sm font-semibold mb-4 tracking-wider uppercase">Teisinė informacija</h5>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="politika.html" class="hover:text-neonPink transition-colors">Privatumo politika</a></li>
+                        <li><a href="salygos.html" class="hover:text-neonPink transition-colors">Paslaugų teikimo sąlygos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white text-sm font-semibold mb-4 tracking-wider uppercase">Kontaktai</h5>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="mailto:looplylt@gmail.com" class="hover:text-neonPink transition-colors inline-flex items-center"><i class="fa-solid fa-envelope mr-2 text-neonPink"></i> looplylt@gmail.com</a></li>
+                        <li><a href="tel:+37060220515" class="hover:text-neonPink transition-colors inline-flex items-center"><i class="fa-solid fa-phone mr-2 text-neonPink"></i> 060220515</a></li>
+                        <li><a href="tel:+37064753394" class="hover:text-neonPink transition-colors inline-flex items-center"><i class="fa-solid fa-phone mr-2 text-neonPink"></i> 064753394</a></li>
+                        <li><i class="fa-solid fa-location-dot mr-2 text-neonPink"></i> Vilnius, Lietuva</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="max-w-7xl mx-auto border-t border-gray-900 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-600">
+                <div>&copy; 2026 Looply. Visos teisės saugomos.</div>
+                <div class="flex gap-4 text-sm">
+                    <a href="https://www.facebook.com/profile.php?id=61592665535578" target="_blank" rel="noopener noreferrer" aria-label="Looply Facebook" class="w-9 h-9 flex items-center justify-center rounded-full border border-gray-800 text-gray-400 hover:text-white hover:border-neonPink hover:bg-neonPink/10 hover:scale-110 transition-all duration-300"><i class="fa-brands fa-facebook text-base"></i></a>
+                    <a href="https://www.instagram.com/looply.lt/" target="_blank" rel="noopener noreferrer" aria-label="Looply Instagram" class="w-9 h-9 flex items-center justify-center rounded-full border border-gray-800 text-gray-400 hover:text-white hover:border-neonPink hover:bg-neonPink/10 hover:scale-110 transition-all duration-300"><i class="fa-brands fa-instagram text-base"></i></a>
+                </div>
+            </div>
+        </footer>
+
+    </div> <!-- PABAIGA: normal-screen-content -->
+
+    <!-- CHATBOTAS -->
+    <div class="fixed bottom-5 right-5 z-50 flex flex-col items-end select-none pointer-events-none">
+        <div id="chat-window" class="opacity-0 translate-y-5 pointer-events-none transition-all duration-300 w-[calc(100vw-2.5rem)] sm:w-96 liquid-glass rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden mb-3">
+            <div class="bg-neonPink text-black p-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="relative w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-neonPink flex items-center justify-center text-white font-black text-sm shrink-0">
+                        L
+                        <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full shadow-[0_0_6px_#22c55e] ring-2 ring-neonPink"></span>
+                    </div>
+                    <span class="font-bold text-sm">Looply AI Asistentas</span>
+                </div>
+                <button onclick="toggleChat()" class="w-8 h-8 flex items-center justify-center hover:opacity-70 transition-opacity"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-4 h-64 overflow-y-auto space-y-3 text-xs flex flex-col" id="chat-messages">
+                <div class="bg-gray-800/80 text-gray-200 p-3 rounded-2xl rounded-tl-none max-w-[80%] self-start leading-relaxed">
+                    Sveiki! 👋 Esu Looply AI chatbotas. Galiu atsakyti į klausimus apie jūsų verslo procesų automatizaciją arba padėti užsiregistruoti nemokamam auditui!
+                </div>
+            </div>
+            <div class="p-3 border-t border-gray-800/60 bg-black/40 flex gap-2">
+                <input type="text" id="chat-input" placeholder="Parašykite žinutę..." class="w-full bg-darkBg border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neonPink" onkeypress="if(event.key === 'Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()" class="bg-neonPink text-black px-4 rounded-xl hover:bg-neonPinkHover transition-colors"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div id="chat-prompt" class="pointer-events-auto hidden sm:flex liquid-glass text-white text-xs font-semibold px-3 py-2 rounded-xl mb-2 mr-1 shadow-[0_4px_15px_rgba(0,0,0,0.5)] flex items-center gap-2 animate-bounce transition-all duration-300">
+            <span class="w-2 h-2 rounded-full bg-neonPink shadow-[0_0_6px_#FF007F]"></span>
+            <span>Turite klausimų? 👋</span>
+        </div>
+        <button onclick="toggleChat()" id="chat-btn" class="pointer-events-auto w-12 h-12 sm:w-14 sm:h-14 liquid-glass-btn rounded-full flex items-center justify-center">
+            <i id="chat-icon" class="fa-solid fa-comments text-xl transition-transform duration-300 text-white"></i>
+        </button>
+    </div>
+
+    <!-- ATSILIEPIMŲ SISTEMA (Firebase Realtime Database) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="looply-reviews.js"></script>
+
+    <!-- LOOPLY AI ASISTENTO ŽINIŲ BAZĖ -->
+    <script src="looply-chatbot.js"></script>
+
+    <!-- JAVASCRIPT VALDYMAS -->
+    <script>
+        // DINAMINIS MENIU NULEIDIMAS IR PASLĖPIMAS PAGAL SCROLL
+        function handleHeaderVisibility() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 80) {
+                header.classList.add('shadow-[0_4px_20px_rgba(0,0,0,0.4)]', 'bg-darkBg/95');
+                header.classList.remove('bg-darkBg/80');
+            } else {
+                header.classList.remove('shadow-[0_4px_20px_rgba(0,0,0,0.4)]', 'bg-darkBg/95');
+                header.classList.add('bg-darkBg/80');
+            }
+        }
+
+        window.addEventListener('scroll', handleHeaderVisibility);
+        window.addEventListener('DOMContentLoaded', handleHeaderVisibility);
+
+        // Sklandus automatinis nusileidimas iki pagrindinio turinio
+        function scrollToContent() {
+            const targetSection = document.getElementById('paslaugos');
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // MOBILAUS MENIU FUNKCIJA
+        let isMobileMenuOpen = false;
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            const btn = document.getElementById('mobile-menu-btn');
+            isMobileMenuOpen = !isMobileMenuOpen;
+            if (isMobileMenuOpen) {
+                mobileMenu.classList.remove('hidden');
+                icon.className = "fa-solid fa-xmark text-2xl";
+                if (btn) { btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-label', 'Uždaryti meniu'); }
+            } else {
+                mobileMenu.classList.add('hidden');
+                icon.className = "fa-solid fa-bars text-2xl";
+                if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', 'Atidaryti meniu'); }
+            }
+        }
+
+        // SKLANDUS PUSLAPIŲ PERĖJIMAS (FADE EFFECT)
+        window.addEventListener('pageshow', () => {
+            document.body.classList.remove('opacity-0');
+        });
+
+        document.querySelectorAll('a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.endsWith('.html') && !href.startsWith('#')) {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.body.classList.add('opacity-0');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 500); 
+                });
+            }
+        });
+
+        // SCROLL REVEAL INTEGRACIJA (Kitoms sekcijoms žemiau pirmojo ekrano)
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    entry.target.classList.add('opacity-0', 'translate-y-10');
+                    entry.target.classList.remove('opacity-100', 'translate-y-0');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => scrollObserver.observe(el));
+
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                content.style.maxHeight = '0px';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        let isChatOpen = false;
+        function toggleChat() {
+            const chatWindow = document.getElementById('chat-window');
+            const chatPrompt = document.getElementById('chat-prompt');
+            const chatIcon = document.getElementById('chat-icon');
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+                chatWindow.classList.remove('opacity-0', 'translate-y-5', 'pointer-events-none');
+                chatWindow.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                chatPrompt.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+                chatPrompt.classList.remove('pointer-events-auto');
+                chatIcon.style.transform = 'rotate(180deg)';
+                setTimeout(() => {
+                    chatIcon.className = "fa-solid fa-chevron-down text-xl text-white";
+                }, 150);
+            } else {
+                chatWindow.classList.add('opacity-0', 'translate-y-5', 'pointer-events-none');
+                chatWindow.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                chatPrompt.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+                chatPrompt.classList.add('pointer-events-auto');
+                chatIcon.style.transform = 'rotate(0deg)';
+                setTimeout(() => {
+                    chatIcon.className = "fa-solid fa-comments text-xl text-white";
+                }, 150);
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const messageText = input.value.trim();
+            if (!messageText) return;
+            const messagesContainer = document.getElementById('chat-messages');
+
+            const userDiv = document.createElement('div');
+            userDiv.className = "bg-neonPink text-black p-3 rounded-2xl rounded-tr-none max-w-[80%] self-end font-medium shadow-sm";
+            userDiv.innerText = messageText;
+            messagesContainer.appendChild(userDiv);
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            const typingBubble = document.createElement('div');
+            typingBubble.className = "bg-gray-800 text-gray-400 p-3 rounded-2xl rounded-tl-none max-w-[60px] self-start flex items-center justify-center gap-1 shadow-sm mt-1";
+            typingBubble.innerHTML = `
+                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full chat-dot" style="animation-delay: 0s"></span>
+                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full chat-dot" style="animation-delay: 0.2s"></span>
+                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full chat-dot" style="animation-delay: 0.4s"></span>
+            `;
+            messagesContainer.appendChild(typingBubble);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            setTimeout(() => {
+                messagesContainer.removeChild(typingBubble);
+                const botDiv = document.createElement('div');
+                botDiv.className = "bg-gray-800 text-gray-200 p-3 rounded-2xl rounded-tl-none max-w-[80%] self-start leading-relaxed shadow-sm";
+                botDiv.innerText = (window.LooplyBot ? window.LooplyBot.getAnswer(messageText) : "Puikus klausimas! Norėdami gauti tikslų sprendimą jūsų sistemoms, spauskite puslapio viršuje esantį mygtuką 'Gauti auditą' ir pasirinkite laiką pokalbiui.");
+                messagesContainer.appendChild(botDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 900 + Math.random() * 500);
+        }
+    </script>
+</body>
+</html>
